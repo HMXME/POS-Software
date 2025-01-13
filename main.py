@@ -154,13 +154,19 @@ def st_mg(uilgun):
 
 
 def hr_salary(uilgun):
-    print(f"Welcome {uilgun} to HR")
-    print("1. View All Branches")
-    print("2. View All Staff")
-    print("3. Check Salaries")
-    print("4. Manage Staff")
-    print("5. Manage Branches")
-    print("6. Exit HR")
+    if logins[uilgun]["des"] == "admin":
+        print(f"Welcome {uilgun} to HR")
+        print("1. View All Branches")
+        print("2. View All Staff")
+        print("3. Check Salaries")
+        print("4. Manage Staff")
+        print("5. Manage Branches")
+        print("6. Exit HR")
+    else:
+        print("You dont have acces to HR Menu")
+        print("Exiting to main menu...")
+        clear_terminal()
+        main_menu(uilgun)
 
 
 def main_menu(uilgun):
