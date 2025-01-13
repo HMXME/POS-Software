@@ -6,6 +6,9 @@ stock_dic = {}
 logins = {
     "hamza": {"password": "hamza123", "des": "admin"}
 }
+salary_dic = {
+    "hamza": {"day": 6, "com": 0}
+}
 
 st_fl_dt = open("stock.txt", "r+")
 st_fl_dt_list = st_fl_dt.readlines()
@@ -21,6 +24,10 @@ def update_file():
         for product, details in stock_dic.items():
             uf.write(f"{product}|{details['quantity']}|{details['price']}\n")
 
+def update_file_salary():
+    with open("salary.txt", "w+") as ufs:
+        for emp, details in salary_dic.items():
+            ufs.write(f"{emp}|{details['day']}|{details['com']}")
 
 def clear_terminal():
     time.sleep(1)
@@ -32,6 +39,8 @@ def login():
     uilgpw = input("Enter your password: ")
     if uilgun in logins and uilgpw == logins[uilgun]["password"]:
         clear_terminal()
+        salary_dic[uilgun]['day'] += 1
+        update_file_salary()
         main_menu(uilgun)
         return uilgun
     else:
@@ -54,6 +63,8 @@ def pos_terminal(uilgun):
             popqu = int(input("Quantity: "))
             print(f"Total is {popqu * stock_dic[popnm]['price']}")
             stock_dic[popnm]["quantity"] -= popqu
+            salary_dic[uilgun]['com'] += popqu/100
+            update_file_salary()
             update_file()
         else:
             clear_terminal()
