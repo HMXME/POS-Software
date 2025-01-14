@@ -1,8 +1,10 @@
 import os
 import time
 
-
+#Initilize the stock dictionary
 stock_dic = {}
+
+#HR related dictionaries
 logins = {
     "hamza": {"password": "hamza123", "des": "admin"}
 }
@@ -10,7 +12,7 @@ salary_dic = {
     "hamza": {"day": 6, "com": 0}
 }
 
-
+#Read the stock file
 def read_file_stock():
     st_fl_dt = open("stock.txt", "r+")
     st_fl_dt_list = st_fl_dt.readlines()
@@ -20,22 +22,24 @@ def read_file_stock():
             stock_dic[stock[0]] = {'quantity': int(stock[1]), 'price': float(stock[2])}
     st_fl_dt.close()
 
-
+#Update stock file
 def update_file():
     with open("stock.txt", "w+") as uf:
         for product, details in stock_dic.items():
             uf.write(f"{product}|{details['quantity']}|{details['price']}\n")
 
+#Read the salary file
 def update_file_salary():
     with open("salary.txt", "w+") as ufs:
         for emp, details in salary_dic.items():
             ufs.write(f"{emp}|{details['day']}|{details['com']}\n")
 
+#Funtion to clear terminal and 1 second delay
 def clear_terminal():
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
+#Login function
 def login():
     while True:
         uilgun = input("Enter your username: ")
@@ -51,13 +55,13 @@ def login():
             print("Invalid Credentials")
             clear_terminal()
 
-
+#Logout function
 def logout():
     print("Logged Out")
     print("Login again to continue")
     login()
 
-
+#POS Terminal function
 def pos_terminal(uilgun):
     print(f"Welcome {uilgun} to POS Terminal")
     popnm = input("Product: ")
@@ -83,7 +87,7 @@ def pos_terminal(uilgun):
         clear_terminal()
         main_menu(uilgun)
 
-
+#Stock Management function
 def st_mg(uilgun):
     print(f"Welcome {uilgun} to Stock Management")
     print("1. View Products")
@@ -166,7 +170,7 @@ def st_mg(uilgun):
         else:
             print("Invalid option selected.")
 
-
+#HR Salary function
 def hr_salary(uilgun):
     if logins[uilgun]["des"] == "admin":
         print(f"Welcome {uilgun} to HR")
@@ -182,7 +186,7 @@ def hr_salary(uilgun):
         clear_terminal()
         main_menu(uilgun)
 
-
+#Main Menu function
 def main_menu(uilgun):
     print(f"Welcome {uilgun} have a great day!")
     print("1. POS Terminal")
@@ -209,5 +213,5 @@ def main_menu(uilgun):
             logout()
         else:
             print("Invalid selection, please choose a number between 1 and 4.")
-
+            main_menu(uilgun)
 login()
