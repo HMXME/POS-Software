@@ -35,18 +35,18 @@ def clear_terminal():
 
 
 def login():
-    uilgun = input("Enter your username: ")
-    uilgpw = input("Enter your password: ")
-    if uilgun in logins and uilgpw == logins[uilgun]["password"]:
-        clear_terminal()
-        salary_dic[uilgun]['day'] += 1
-        update_file_salary()
-        main_menu(uilgun)
-        return uilgun
-    else:
-        print("Invalid Credentials")
-        clear_terminal()
-        login()
+    while True:
+        uilgun = input("Enter your username: ")
+        uilgpw = input("Enter your password: ")
+        if uilgun in logins and uilgpw == logins[uilgun]["password"]:
+            clear_terminal()
+            salary_dic[uilgun]['day'] += 1
+            update_file_salary()
+            main_menu(uilgun)
+            return uilgun
+        else:
+            print("Invalid Credentials")
+            clear_terminal()
 
 
 def logout():
