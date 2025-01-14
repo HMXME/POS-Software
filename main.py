@@ -27,7 +27,7 @@ def update_file():
 def update_file_salary():
     with open("salary.txt", "w+") as ufs:
         for emp, details in salary_dic.items():
-            ufs.write(f"{emp}|{details['day']}|{details['com']}")
+            ufs.write(f"{emp}|{details['day']}|{details['com']}\n")
 
 def clear_terminal():
     time.sleep(1)
@@ -109,8 +109,8 @@ def st_mg(uilgun):
             clear_terminal()
             print("You selected Add new Product.")
             uistgmmna = input("Enter Product name you want to add: ")
-            uistgmmnqa = input("Enter quantity: ")
-            uistgmmnpa = input("Enter its price: ")
+            uistgmmnqa = int(input("Enter quantity: "))
+            uistgmmnpa = float(input("Enter its price: "))
             if uistgmmna not in stock_dic:
                 stock_dic[uistgmmna] = {"quantity": uistgmmnqa, "price": uistgmmnpa}
                 update_file()
@@ -136,7 +136,7 @@ def st_mg(uilgun):
             print("You selected Edit Product Price.")
             uistgmmnm = input("Enter Product name you want to edit: ")
             if uistgmmnm in stock_dic:
-                uistgmmnmcd = int(input("Enter New Price: "))
+                uistgmmnmcd = float(input("Enter New Price: "))
                 stock_dic[uistgmmnm]["price"] = uistgmmnmcd
                 print(f"{uistgmmnm} price changed to {uistgmmnmcd}")
                 update_file()
