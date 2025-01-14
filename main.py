@@ -10,13 +10,15 @@ salary_dic = {
     "hamza": {"day": 6, "com": 0}
 }
 
-st_fl_dt = open("stock.txt", "r+")
-st_fl_dt_list = st_fl_dt.readlines()
-for st in st_fl_dt_list:
-    stock = st.strip().split("|")
-    if len(stock) > 0:
-        stock_dic[stock[0]] = {'quantity': int(stock[1]), 'price': float(stock[2])}
-st_fl_dt.close()
+
+def read_file_stock():
+    st_fl_dt = open("stock.txt", "r+")
+    st_fl_dt_list = st_fl_dt.readlines()
+    for st in st_fl_dt_list:
+        stock = st.strip().split("|")
+        if len(stock) > 0:
+            stock_dic[stock[0]] = {'quantity': int(stock[1]), 'price': float(stock[2])}
+    st_fl_dt.close()
 
 
 def update_file():
@@ -42,6 +44,7 @@ def login():
             clear_terminal()
             salary_dic[uilgun]['day'] += 1
             update_file_salary()
+            read_file_stock()
             main_menu(uilgun)
             return uilgun
         else:
