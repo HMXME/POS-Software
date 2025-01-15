@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime as dt
 
 #Initilize the stock dictionary
 stock_dic = {}
@@ -10,6 +11,8 @@ employees = {
 }
 salary_dic = {
     1: {"name": "Hamza", "day": 6, "com": 0}
+}
+attendance_dic = {
 }
 
 #Read the stock file
@@ -30,17 +33,33 @@ def read_file_salary():
             if len(salary) >= 4:
                 salary_dic[int(salary[0])] = {'name': (salary[1]), 'day': int(salary[2]), 'com': int(salary[3])}
 
+#Read Attendance File
+def read_file_attendance():
+    with open("attendance.txt", "r") as rfa:
+        rfa_list = rfa.readlines()
+        for rfa_line in rfa_list:
+            attend = rfa_line.strip().strip("|")
+            if len(attend) > 0:
+                attendance_dic[attend[0]] = {'date': (attend[1])}
+
+#Update Attendance File
+def update_file_attendance():
+    with open("attendance.txt", "w") as ufa:
+        for att, details in attendance_dic.items():
+            ufa.write(f"{att}|{details['date']}")
+
 #Update stock file
 def update_file():
     with open("stock.txt", "w") as uf:
         for product, details in stock_dic.items():
             uf.write(f"{product}|{details['quantity']}|{details['price']}\n")
 
-#Read the salary file
+#Update the salary file
 def update_file_salary():
     with open("salary.txt", "w") as ufs:
         for emp, details in salary_dic.items():
             ufs.write(f"{emp}|{details['name']}|{details['day']}|{details['com']}\n")
+
 
 #Funtion to clear terminal and 1 second delay
 def clear_terminal():
@@ -56,8 +75,7 @@ def login():
             clear_terminal()
             salary_dic[uilgun]['day'] += 1
             update_file_salary()
-            read_file_stock()
-            read_file_salary()
+            update_file_attendance()
             main_menu(uilgun)
             return uilgun
         else:
