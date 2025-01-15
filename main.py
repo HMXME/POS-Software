@@ -5,34 +5,42 @@ import time
 stock_dic = {}
 
 #HR related dictionaries
-logins = {
-    "hamza": {"password": "hamza123", "des": "admin"}
+employees = {
+    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "HR"}
 }
 salary_dic = {
-    "hamza": {"day": 6, "com": 0}
+    1: {"name": "Hamza", "day": 6, "com": 0}
 }
 
 #Read the stock file
 def read_file_stock():
-    st_fl_dt = open("stock.txt", "r+")
-    st_fl_dt_list = st_fl_dt.readlines()
-    for st in st_fl_dt_list:
-        stock = st.strip().split("|")
-        if len(stock) > 0:
-            stock_dic[stock[0]] = {'quantity': int(stock[1]), 'price': float(stock[2])}
-    st_fl_dt.close()
+    with open("stock.txt", "r") as st_fl_dt:
+        st_fl_dt_list = st_fl_dt.readlines()
+        for st in st_fl_dt_list:
+            stock = st.strip().split("|")
+            if len(stock) > 0:
+                stock_dic[stock[0]] = {'quantity': int(stock[1]), 'price': float(stock[2])}
+
+#Read Salary File
+def read_file_salary():
+    with open("salary.txt", "r") as rfs:
+        rfs_list = rfs.readlines()
+        for sl in rfs_list:
+            salary = sl.strip().split("|")
+            if len(salary) >= 4:
+                salary_dic[int(salary[0])] = {'name': (salary[1]), 'day': int(salary[2]), 'com': int(salary[3])}
 
 #Update stock file
 def update_file():
-    with open("stock.txt", "w+") as uf:
+    with open("stock.txt", "w") as uf:
         for product, details in stock_dic.items():
             uf.write(f"{product}|{details['quantity']}|{details['price']}\n")
 
 #Read the salary file
 def update_file_salary():
-    with open("salary.txt", "w+") as ufs:
+    with open("salary.txt", "w") as ufs:
         for emp, details in salary_dic.items():
-            ufs.write(f"{emp}|{details['day']}|{details['com']}\n")
+            ufs.write(f"{emp}|{details['name']}|{details['day']}|{details['com']}\n")
 
 #Funtion to clear terminal and 1 second delay
 def clear_terminal():
@@ -42,13 +50,14 @@ def clear_terminal():
 #Login function
 def login():
     while True:
-        uilgun = input("Enter your username: ")
+        uilgun = int(input("Enter your username: "))
         uilgpw = input("Enter your password: ")
-        if uilgun in logins and uilgpw == logins[uilgun]["password"]:
+        if uilgun in employees and uilgpw == employees[uilgun]["password"]:
             clear_terminal()
             salary_dic[uilgun]['day'] += 1
             update_file_salary()
             read_file_stock()
+            read_file_salary()
             main_menu(uilgun)
             return uilgun
         else:
@@ -63,14 +72,14 @@ def logout():
 
 #POS Terminal function
 def pos_terminal(uilgun):
-    print(f"Welcome {uilgun} to POS Terminal")
+    print(f"Welcome {employees[uilgun]['name']} to POS Terminal")
     popnm = input("Product: ")
     if popnm in stock_dic:
         if stock_dic[popnm]["quantity"] > 0:
             popqu = int(input("Quantity: "))
             print(f"Total is {popqu * stock_dic[popnm]['price']}")
             stock_dic[popnm]["quantity"] -= popqu
-            salary_dic[uilgun]['com'] += popqu/100
+            salary_dic[uilgun]['com'] += popqu/10
             update_file_salary()
             update_file()
         else:
@@ -81,7 +90,7 @@ def pos_terminal(uilgun):
         print("Desired product unavailable")
         pos_terminal(uilgun)
     another = input("Would you like to buy anything else(yes/no)? ")
-    if another == "yes":
+    if another.lower() == "yes":
         pos_terminal(uilgun)
     else:
         clear_terminal()
@@ -89,7 +98,7 @@ def pos_terminal(uilgun):
 
 #Stock Management function
 def st_mg(uilgun):
-    print(f"Welcome {uilgun} to Stock Management")
+    print(f"Welcome {employees[uilgun]["name"]} to Stock Management")
     print("1. View Products")
     print("2. Add New Product")
     print("3. Edit Product Name")
@@ -172,14 +181,35 @@ def st_mg(uilgun):
 
 #HR Salary function
 def hr_salary(uilgun):
-    if logins[uilgun]["des"] == "admin":
-        print(f"Welcome {uilgun} to HR")
+    if employees[uilgun]["des"] in ["admin", "HR"]:
+        print(f"Welcome {employees[uilgun]["name"]} to HR")
         print("1. View All Branches")
         print("2. View All Staff")
         print("3. Check Salaries")
         print("4. Manage Staff")
         print("5. Manage Branches")
         print("6. Exit HR")
+        try:
+            uihr = int(input("Select your operation: "))
+        except ValueError:
+            print("Please select bt 1-6")
+        finally:
+            if uihr == 1:
+                print("Available Branches")
+            elif uihr == 2:
+                print("Available Staff")
+            elif uihr == 3:
+                print("Check salary")
+                uihrsc = int(input("Enter staff id to check their salary: "))
+                if uihrsc in salary_dic:
+                    clear_terminal()
+                    print(f"{salary_dic[uihrsc]['name']} salary of this month is {salary_dic[uihrsc]['day'] + salary_dic[uihrsc]['com']}rs")
+            elif uihr == 4:
+                print("Manage Staff")
+            elif uihr == 5:
+                print("Manage Branch")
+            elif uihr == 6:
+                main_menu(uilgun)
     else:
         print("You dont have acces to HR Menu")
         print("Exiting to main menu...")
@@ -188,7 +218,7 @@ def hr_salary(uilgun):
 
 #Main Menu function
 def main_menu(uilgun):
-    print(f"Welcome {uilgun} have a great day!")
+    print(f"Welcome {employees[uilgun]["name"]} have a great day!")
     print("1. POS Terminal")
     print("2. Stock Management")
     print("3. HR Salary")
