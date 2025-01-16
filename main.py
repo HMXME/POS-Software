@@ -14,7 +14,7 @@ employees = {
 salary_dic = {
     1: {"name": "Hamza", "day": 6, "com": 0}
 }
-attendance_dic = {1: {'date': '2025114'}}
+attendance_dic = {}
 
 #Read the stock file
 def read_file_stock():
@@ -45,8 +45,8 @@ def read_file_attendance():
 #Update Attendance File
 def update_file_attendance():
     with open("attendance.txt", "w") as ufa:
-        for att, details in attendance_dic.items():
-            ufa.write(f"{att}|{details['date']}\n")
+        for username, details in attendance_dic.items():
+            ufa.write(f"{username}|{details['date']}\n")
 
 #Update stock file
 def update_file():
@@ -75,16 +75,16 @@ def login():
             clear_terminal()
             read_file_salary()
             read_file_attendance()
-            if attendance_dic[uilgun]['date'] != formated_today:
+            if attendance_dic[uilgun]['date'] == formated_today:
+                main_menu(uilgun)
+                return(uilgun)
+            else:
                 attendance_dic[uilgun]['date'] = formated_today
                 salary_dic[uilgun]['day'] += 1
                 update_file_salary()
                 update_file_attendance()
                 main_menu(uilgun)
                 return uilgun
-            else:
-                main_menu(uilgun)
-                return(uilgun)
         else:
             print("Invalid Credentials")
             clear_terminal()
