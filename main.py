@@ -1,6 +1,8 @@
 import os
 import time
 from datetime import datetime as dt
+today = dt.today().date()
+formated_today = str(today.strftime("%y%m%d"))
 
 #Initilize the stock dictionary
 stock_dic = {}
@@ -12,8 +14,7 @@ employees = {
 salary_dic = {
     1: {"name": "Hamza", "day": 6, "com": 0}
 }
-attendance_dic = {
-}
+attendance_dic = {1: {'date': '2025114'}}
 
 #Read the stock file
 def read_file_stock():
@@ -38,15 +39,14 @@ def read_file_attendance():
     with open("attendance.txt", "r") as rfa:
         rfa_list = rfa.readlines()
         for rfa_line in rfa_list:
-            attend = rfa_line.strip().strip("|")
-            if len(attend) > 0:
-                attendance_dic[attend[0]] = {'date': (attend[1])}
+            username, date = rfa_line.strip().split("|")
+            attendance_dic[int(username)] = {'date': date}
 
 #Update Attendance File
 def update_file_attendance():
     with open("attendance.txt", "w") as ufa:
         for att, details in attendance_dic.items():
-            ufa.write(f"{att}|{details['date']}")
+            ufa.write(f"{att}|{details['date']}\n")
 
 #Update stock file
 def update_file():
@@ -73,11 +73,18 @@ def login():
         uilgpw = input("Enter your password: ")
         if uilgun in employees and uilgpw == employees[uilgun]["password"]:
             clear_terminal()
-            salary_dic[uilgun]['day'] += 1
-            update_file_salary()
-            update_file_attendance()
-            main_menu(uilgun)
-            return uilgun
+            read_file_salary()
+            read_file_attendance()
+            if attendance_dic[uilgun]['date'] != formated_today:
+                attendance_dic[uilgun]['date'] = formated_today
+                salary_dic[uilgun]['day'] += 1
+                update_file_salary()
+                update_file_attendance()
+                main_menu(uilgun)
+                return uilgun
+            else:
+                main_menu(uilgun)
+                return(uilgun)
         else:
             print("Invalid Credentials")
             clear_terminal()
