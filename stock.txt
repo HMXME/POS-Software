@@ -1,4 +1,4 @@
-apple|34|9.0
+apple|50|9.0
 mango|50|10.0
 banana|50|8.0
 guava|50|11.0

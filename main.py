@@ -9,7 +9,7 @@ stock_dic = {}
 
 #HR related dictionaries
 employees = {
-    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "HR"}
+    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "admin"},
 }
 salary_dic = {
     1: {"name": "Hamza", "day": 6, "com": 0}
@@ -124,104 +124,110 @@ def pos_terminal(uilgun):
 
 #Stock Management function
 def st_mg(uilgun):
-    print(f"Welcome {employees[uilgun]["name"]} to Stock Management")
-    print("1. View Products")
-    print("2. Add New Product")
-    print("3. Delect a Product")
-    print("4. Edit Product Name")
-    print("5. Edit Product Price")
-    print("6. Edit Product Quantity")
-    print("7. Exit")
-    try:
-        uistgmm = int(input("Select your desired operation: "))
-    except ValueError:
-        print("You selected wrong")
-        uistgmm = None
-    finally:
-        if uistgmm == 1:
-            clear_terminal()
-            print("Available Products:")
-            for index, product_name in enumerate(stock_dic.keys(), start=1):
-                print(f"{index}. {product_name}")
-            go_back = int(input("Press 1 to go back: "))
-            if go_back == 1:
-                st_mg(uilgun)
-            else:
-                ("Wrong Decision")
-        elif uistgmm == 2:
-            clear_terminal()
-            print("You selected Add new Product.")
-            uistgmmna = input("Enter Product name you want to add: ")
-            uistgmmnqa = int(input("Enter quantity: "))
-            uistgmmnpa = float(input("Enter its price: "))
-            if uistgmmna not in stock_dic:
-                stock_dic[uistgmmna] = {"quantity": uistgmmnqa, "price": uistgmmnpa}
-                update_file()
-                st_mg(uilgun)
-            else:
-                print("Product already exist!")
-                st_mg(uilgun)
-        elif uistgmm == 3:
-            print("You selected to delete a product.")
-            uistgmmdp = input("Enter product name to delete: ")
-            if uistgmmdp in stock_dic:
-                stock_dic.pop(uistgmmdp)
-                print(f"{uistgmmdp.capitalize()} deleted")
-                update_file()
+    if employees[uilgun]["des"] in ["admin", "hr", "st_manager"]:
+        print(f"Welcome {employees[uilgun]["name"]} to Stock Management")
+        print("1. View Products")
+        print("2. Add New Product")
+        print("3. Delect a Product")
+        print("4. Edit Product Name")
+        print("5. Edit Product Price")
+        print("6. Edit Product Quantity")
+        print("7. Exit")
+        try:
+            uistgmm = int(input("Select your desired operation: "))
+        except ValueError:
+            print("You selected wrong")
+            uistgmm = None
+        finally:
+            if uistgmm == 1:
                 clear_terminal()
-                st_mg(uilgun)
-            else:
-                print("Product not found")
+                print("Available Products:")
+                for index, product_name in enumerate(stock_dic.keys(), start=1):
+                    print(f"{index}. {product_name}")
+                go_back = int(input("Press 1 to go back: "))
+                if go_back == 1:
+                    st_mg(uilgun)
+                else:
+                    ("Wrong Decision")
+            elif uistgmm == 2:
                 clear_terminal()
-                st_mg(uilgun)
-        elif uistgmm == 3:
-            clear_terminal()
-            print("You selected Edit Product Name.")
-            uistgmmnm = input("Enter Product name you want to edit: ")
-            if uistgmmnm in stock_dic:
-                uistgmmnmcd = input("Enter New Name: ")
-                stock_dic[uistgmmnmcd] = stock_dic.pop(uistgmmnm)
-                print(f"{uistgmmnm} changed to {uistgmmnmcd}")
-                update_file()
-                st_mg(uilgun)
+                print("You selected Add new Product.")
+                uistgmmna = input("Enter Product name you want to add: ")
+                uistgmmnqa = int(input("Enter quantity: "))
+                uistgmmnpa = float(input("Enter its price: "))
+                if uistgmmna not in stock_dic:
+                    stock_dic[uistgmmna] = {"quantity": uistgmmnqa, "price": uistgmmnpa}
+                    update_file()
+                    st_mg(uilgun)
+                else:
+                    print("Product already exist!")
+                    st_mg(uilgun)
+            elif uistgmm == 3:
+                print("You selected to delete a product.")
+                uistgmmdp = input("Enter product name to delete: ")
+                if uistgmmdp in stock_dic:
+                    stock_dic.pop(uistgmmdp)
+                    print(f"{uistgmmdp.capitalize()} deleted")
+                    update_file()
+                    clear_terminal()
+                    st_mg(uilgun)
+                else:
+                    print("Product not found")
+                    clear_terminal()
+                    st_mg(uilgun)
+            elif uistgmm == 3:
+                clear_terminal()
+                print("You selected Edit Product Name.")
+                uistgmmnm = input("Enter Product name you want to edit: ")
+                if uistgmmnm in stock_dic:
+                    uistgmmnmcd = input("Enter New Name: ")
+                    stock_dic[uistgmmnmcd] = stock_dic.pop(uistgmmnm)
+                    print(f"{uistgmmnm} changed to {uistgmmnmcd}")
+                    update_file()
+                    st_mg(uilgun)
+                else:
+                    print("Entered product not found")
+                    st_mg(uilgun)
+            elif uistgmm == 4:
+                clear_terminal()
+                print("You selected Edit Product Price.")
+                uistgmmnm = input("Enter Product name you want to edit: ")
+                if uistgmmnm in stock_dic:
+                    uistgmmnmcd = float(input("Enter New Price: "))
+                    stock_dic[uistgmmnm]["price"] = uistgmmnmcd
+                    print(f"{uistgmmnm} price changed to {uistgmmnmcd}")
+                    update_file()
+                    st_mg(uilgun)
+                else:
+                    print("You entered wrong product")
+                    st_mg(uilgun)
+            elif uistgmm == 5:
+                clear_terminal()
+                print("You selected Edit Product Quantity.")
+                uistgmmnm = input("Enter Product name you want to edit: ")
+                if uistgmmnm in stock_dic:
+                    uistgmmnmcd = int(input("Enter Quantity: "))
+                    stock_dic[uistgmmnm]["quantity"] = uistgmmnmcd
+                    print(f"{uistgmmnm} quantity changed to {uistgmmnmcd}")
+                    update_file()
+                    st_mg(uilgun)
+                else:
+                    print("Product not found")
+                    st_mg(uilgun)
+            elif uistgmm == 6:
+                clear_terminal()
+                main_menu(uilgun)
             else:
-                print("Entered product not found")
-                st_mg(uilgun)
-        elif uistgmm == 4:
-            clear_terminal()
-            print("You selected Edit Product Price.")
-            uistgmmnm = input("Enter Product name you want to edit: ")
-            if uistgmmnm in stock_dic:
-                uistgmmnmcd = float(input("Enter New Price: "))
-                stock_dic[uistgmmnm]["price"] = uistgmmnmcd
-                print(f"{uistgmmnm} price changed to {uistgmmnmcd}")
-                update_file()
-                st_mg(uilgun)
-            else:
-                print("You entered wrong product")
-                st_mg(uilgun)
-        elif uistgmm == 5:
-            clear_terminal()
-            print("You selected Edit Product Quantity.")
-            uistgmmnm = input("Enter Product name you want to edit: ")
-            if uistgmmnm in stock_dic:
-                uistgmmnmcd = int(input("Enter Quantity: "))
-                stock_dic[uistgmmnm]["quantity"] = uistgmmnmcd
-                print(f"{uistgmmnm} quantity changed to {uistgmmnmcd}")
-                update_file()
-                st_mg(uilgun)
-            else:
-                print("Product not found")
-                st_mg(uilgun)
-        elif uistgmm == 6:
-            clear_terminal()
-            main_menu(uilgun)
-        else:
-            print("Invalid option selected.")
+                print("Invalid option selected.")
+    else:
+        print("You dont have access to Stock Management")
+        print("Exiting to main menu...")
+        clear_terminal()
+        main_menu(uilgun)
 
 #HR Salary function
 def hr_salary(uilgun):
-    if employees[uilgun]["des"] in ["admin", "HR"]:
+    if employees[uilgun]["des"] in ["admin", "hr"]:
         print(f"Welcome {employees[uilgun]["name"]} to HR")
         print("1. View All Branches")
         print("2. View All Staff")
