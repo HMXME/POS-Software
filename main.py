@@ -75,6 +75,7 @@ def login():
             clear_terminal()
             read_file_salary()
             read_file_attendance()
+            read_file_stock()
             if attendance_dic[uilgun]['date'] == formated_today:
                 main_menu(uilgun)
                 return(uilgun)
@@ -126,10 +127,11 @@ def st_mg(uilgun):
     print(f"Welcome {employees[uilgun]["name"]} to Stock Management")
     print("1. View Products")
     print("2. Add New Product")
-    print("3. Edit Product Name")
-    print("4. Edit Product Price")
-    print("5. Edit Product Quantity")
-    print("6. Exit")
+    print("3. Delect a Product")
+    print("4. Edit Product Name")
+    print("5. Edit Product Price")
+    print("6. Edit Product Quantity")
+    print("7. Exit")
     try:
         uistgmm = int(input("Select your desired operation: "))
     except ValueError:
@@ -158,6 +160,19 @@ def st_mg(uilgun):
                 st_mg(uilgun)
             else:
                 print("Product already exist!")
+                st_mg(uilgun)
+        elif uistgmm == 3:
+            print("You selected to delete a product.")
+            uistgmmdp = input("Enter product name to delete: ")
+            if uistgmmdp in stock_dic:
+                stock_dic.pop(uistgmmdp)
+                print(f"{uistgmmdp.capitalize()} deleted")
+                update_file()
+                clear_terminal()
+                st_mg(uilgun)
+            else:
+                print("Product not found")
+                clear_terminal()
                 st_mg(uilgun)
         elif uistgmm == 3:
             clear_terminal()
