@@ -4,16 +4,10 @@ from datetime import datetime as dt
 today = dt.today().date()
 formated_today = str(today.strftime("%y%m%d"))
 
-#Initilize the stock dictionary
+#Admin related dictionaries
 stock_dic = {}
-
-#HR related dictionaries
-employees = {
-    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "admin"}
-}
-salary_dic = {
-    1: {"name": "Hamza", "day": 0, "com": 0}
-}
+employees = {}
+salary_dic = {}
 attendance_dic = {}
 
 #Read the stock file
@@ -42,6 +36,15 @@ def read_file_attendance():
             username, date = rfa_line.strip().split("|")
             attendance_dic[int(username)] = {'date': date}
 
+#Read Employees File
+def read_file_employees():
+    with open("employees.txt", "r") as rfe:
+        rfe_list = rfe.readlines()
+        for rfe_line in rfe_list:
+            employee = rfe_line.strip().split("|")
+            if len(employee) >= 5:
+                employees[int(employee[0])] = {'name': employee[1], 'password': employee[2], 'cnic': int(employee[3]), 'branch': employee[4], 'des': employee[5]}
+
 #Update Attendance File
 def update_file_attendance():
     with open("attendance.txt", "w") as ufa:
@@ -60,6 +63,12 @@ def update_file_salary():
         for emp, details in salary_dic.items():
             ufs.write(f"{emp}|{details['name']}|{details['day']}|{details['com']}\n")
 
+#Update the Employees file
+def update_file_employees():
+    with open("employees.txt", "w") as ufe:
+        for emp, details in employees.items():
+            ufe.write(f"{emp}|{details['name']}|{details['password']}|{details['cnic']}|{details['branch']}|{details['des']}\n")
+
 
 #Funtion to clear terminal and 1 second delay
 def clear_terminal():
@@ -69,13 +78,14 @@ def clear_terminal():
 #Login function
 def login():
     while True:
+        read_file_salary()
+        read_file_attendance()
+        read_file_stock()
+        read_file_employees()
         uilgun = int(input("Enter your username: "))
         uilgpw = input("Enter your password: ")
         if uilgun in employees and uilgpw == employees[uilgun]["password"]:
             clear_terminal()
-            read_file_salary()
-            read_file_attendance()
-            read_file_stock()
             if attendance_dic[uilgun]['date'] == formated_today:
                 main_menu(uilgun)
                 return(uilgun)
@@ -83,6 +93,8 @@ def login():
                 attendance_dic[uilgun]['date'] = formated_today
                 salary_dic[uilgun]['day'] += 1
                 update_file_salary()
+                update_file_employees()
+                update_file()
                 update_file_attendance()
                 main_menu(uilgun)
                 return uilgun
