@@ -9,10 +9,10 @@ stock_dic = {}
 
 #HR related dictionaries
 employees = {
-    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "admin"},
+    1: {"name": "Hamza", "password": "admin", "cnic": 3520234862403, "branch": "HDOF", "des": "admin"}
 }
 salary_dic = {
-    1: {"name": "Hamza", "day": 6, "com": 0}
+    1: {"name": "Hamza", "day": 0, "com": 0}
 }
 attendance_dic = {}
 
@@ -175,7 +175,7 @@ def st_mg(uilgun):
                     print("Product not found")
                     clear_terminal()
                     st_mg(uilgun)
-            elif uistgmm == 3:
+            elif uistgmm == 4:
                 clear_terminal()
                 print("You selected Edit Product Name.")
                 uistgmmnm = input("Enter Product name you want to edit: ")
@@ -188,7 +188,7 @@ def st_mg(uilgun):
                 else:
                     print("Entered product not found")
                     st_mg(uilgun)
-            elif uistgmm == 4:
+            elif uistgmm == 5:
                 clear_terminal()
                 print("You selected Edit Product Price.")
                 uistgmmnm = input("Enter Product name you want to edit: ")
@@ -201,7 +201,7 @@ def st_mg(uilgun):
                 else:
                     print("You entered wrong product")
                     st_mg(uilgun)
-            elif uistgmm == 5:
+            elif uistgmm == 6:
                 clear_terminal()
                 print("You selected Edit Product Quantity.")
                 uistgmmnm = input("Enter Product name you want to edit: ")
@@ -214,7 +214,7 @@ def st_mg(uilgun):
                 else:
                     print("Product not found")
                     st_mg(uilgun)
-            elif uistgmm == 6:
+            elif uistgmm == 7:
                 clear_terminal()
                 main_menu(uilgun)
             else:
@@ -229,32 +229,28 @@ def st_mg(uilgun):
 def hr_salary(uilgun):
     if employees[uilgun]["des"] in ["admin", "hr"]:
         print(f"Welcome {employees[uilgun]["name"]} to HR")
-        print("1. View All Branches")
-        print("2. View All Staff")
-        print("3. Check Salaries")
-        print("4. Manage Staff")
-        print("5. Manage Branches")
-        print("6. Exit HR")
+        print("1. View All Staff")
+        print("2. Check Salaries")
+        print("3. Manage Staff")
+        print("4. Exit HR")
         try:
             uihr = int(input("Select your operation: "))
         except ValueError:
             print("Please select bt 1-6")
         finally:
             if uihr == 1:
-                print("Available Branches")
-            elif uihr == 2:
                 print("Available Staff")
-            elif uihr == 3:
+                for index, staff in enumerate(employees, start=1):
+                    print(f"{index}. {employees[staff]['name']}")
+            elif uihr == 2:
                 print("Check salary")
                 uihrsc = int(input("Enter staff id to check their salary: "))
                 if uihrsc in salary_dic:
                     clear_terminal()
                     print(f"{salary_dic[uihrsc]['name']} salary of this month is {salary_dic[uihrsc]['day'] + salary_dic[uihrsc]['com']}rs")
-            elif uihr == 4:
+            elif uihr == 3:
                 print("Manage Staff")
-            elif uihr == 5:
-                print("Manage Branch")
-            elif uihr == 6:
+            elif uihr == 4:
                 main_menu(uilgun)
     else:
         print("You dont have acces to HR Menu")
