@@ -261,7 +261,53 @@ def hr_salary(uilgun):
                     clear_terminal()
                     print(f"{salary_dic[uihrsc]['name']} salary of this month is {salary_dic[uihrsc]['day'] + salary_dic[uihrsc]['com']}rs")
             elif uihr == 3:
-                print("Manage Staff")
+                clear_terminal()
+                print("Manage Staff.")
+                try:
+                    print("1. Add an Employee")
+                    print("2. Delete an Employee")
+                    print("3. Change CNIC")
+                    print("4. Change Employee Branch")
+                    print("5. Change Designation")
+                    uihrms = int(input("Select your operation: "))
+                except ValueError:
+                    print("Invalid Selection")
+                finally:
+                    if uihrms == 1:
+                        clear_terminal()
+                        print("Add an Employee.")
+                        last_emp_id = list(employees.keys())[-1]
+                        uihrmsaeid = last_emp_id + 1
+                        uihrmsaenm = input("Enter Employee Name: ").capitalize()
+                        uihrmsaeps = input("Enter Employee Login Password: ")
+                        uihrmsaecn = int(input("Enter CNIC number: "))
+                        uihrmsaebr = input("Enter Employee Branch: ").upper()
+                        uihrmsaeds = input("Enter Employee's Designation: ").lower()
+                        print(f'{uihrmsaenm} having {uihrmsaecn} Added')
+                        employees[int(uihrmsaeid)] = {'name': uihrmsaenm, 'password': uihrmsaeps, 'cnic': uihrmsaecn, 'branch': uihrmsaebr, 'des': uihrmsaeds}
+                        attendance_dic[uihrmsaeid] = {'date': formated_today}
+                        salary_dic[uihrmsaeid] = {'name': uihrmsaenm, 'day': 0, 'com': 0}
+                        update_file_employees()
+                        update_file_attendance()
+                        update_file_salary()
+                        clear_terminal()
+                        hr_salary(uilgun)
+                    elif uihrms == 2:
+                        clear_terminal()
+                        print("Deletee and Employee")
+                    elif uihrms == 3:
+                        clear_terminal()
+                        print("Change CNIC")
+                    elif uihrms == 4:
+                        clear_terminal()
+                        print("Change Employee Branch")
+                    elif uihrms == 5:
+                        clear_terminal()
+                        print("Change Desgination")
+                    else:
+                        print("Exiting")
+                        clear_terminal()
+                        hr_salary(uilgun)
             elif uihr == 4:
                 main_menu(uilgun)
     else:
