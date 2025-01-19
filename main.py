@@ -294,18 +294,57 @@ def hr_salary(uilgun):
                         hr_salary(uilgun)
                     elif uihrms == 2:
                         clear_terminal()
-                        print("Deletee and Employee")
+                        print("Delete an Employee")
+                        uihrmsdenm = int(input("Enter Employee ID to delete: "))
+                        if uihrmsdenm in employees:
+                            print(f"{employees[uihrmsdenm]['name']} Deleted")
+                            employees.pop(uihrmsdenm)
+                            update_file_employees()
+                            clear_terminal()
+                            hr_salary(uilgun)
+                        else:
+                            print("Employee not found")
+                            clear_terminal()
+                            hr_salary(uilgun)
                     elif uihrms == 3:
                         clear_terminal()
-                        print("Change CNIC")
+                        print("Change CNIC of an Employee")
+                        uihrmsccn = int(input("Enter Employee ID to change CNIC: "))
+                        if uihrmsccn in employees:
+                            uihrmscnc = int(input("Enter New CNIC: "))
+                            employees[uihrmsccn]['cnic'] = uihrmscnc
+                            print(f"{employees[uihrmsccn]['name']} CNIC changed to {uihrmscnc}")
+                            update_file_employees()
+                            clear_terminal()
+                            hr_salary(uilgun)
+                        else:
+                            print("Employee not found")
+                            clear_terminal()
+                            hr_salary(uilgun)
                     elif uihrms == 4:
                         clear_terminal()
                         print("Change Employee Branch")
+                        uihrmscebn = int(input("Enter Employee ID to change Branch: "))
+                        if uihrmscebn in employees:
+                            uihrmscebb = input("Enter New Branch: ")
+                            employees[uihrmscebn]['branch'] = uihrmscebb
+                            print(f"{employees[uihrmscebn]['name']} Branch changed to {uihrmscebb}")
+                            update_file_employees()
+                            clear_terminal()
+                            hr_salary(uilgun)
                     elif uihrms == 5:
                         clear_terminal()
                         print("Change Desgination")
+                        uihrmscd = int(input("Enter Employee ID to change Designation: "))
+                        if uihrmscd in employees:
+                            uihrmscdd = input("Enter New Designation: ")
+                            employees[uihrmscd]['des'] = uihrmscdd
+                            print(f"{employees[uihrmscd]['name']} Designation changed to {uihrmscdd}")
+                            update_file_employees()
+                            clear_terminal()
+                            hr_salary(uilgun)
                     else:
-                        print("Exiting")
+                        print("Exiting to HR Menu...")
                         clear_terminal()
                         hr_salary(uilgun)
             elif uihr == 4:
